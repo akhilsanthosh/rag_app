@@ -24,9 +24,9 @@ def ensure_collection():
             collection_name=COLL,
             vectors_config=VectorParams(size=dim, distance=Distance.COSINE)
         )
-        print(f"✅ Created collection: {COLL} (dim={dim})")
+        print(f" Created collection: {COLL} (dim={dim})")
     else:
-        print(f"ℹ️ Collection '{COLL}' already exists")
+        print(f"ℹ Collection '{COLL}' already exists")
 
 
 
@@ -35,7 +35,7 @@ def chunk_text(text: str, target=400, overlap=60):
     sents = re.split(r'(?<=[.!?])\s+', text)
     chunks, buf, toks = [], [], 0
 
-    # ✅ Fixed tokenizer (safe and works across SentenceTransformer versions)
+    #  Fixed tokenizer (safe and works across SentenceTransformer versions)
     def count_tokens(t):
         tokens = embedder.tokenizer(t, return_tensors="pt")["input_ids"]
         return tokens.shape[1]
@@ -60,15 +60,15 @@ def ingest_file(path: str = None, tenant_id="demo"):
     texts = []
 
     if path and os.path.exists(path):
-        print(f"📄 Extracting from file: {path}")
+        print(f" Extracting from file: {path}")
         elements = partition(filename=path)
         texts = [e.text for e in elements if getattr(e, "text", None)]
         text = "\n".join(texts).strip()
         if not text:
-            print("⚠️  No text could be extracted. Maybe scanned or image-based PDF.")
+            print("  No text could be extracted. Maybe scanned or image-based PDF.")
             return
     else:
-        print("⚙️ No file found — inserting sample demo text.")
+        print(" No file found — inserting sample demo text.")
         texts = [
             """Customers can request a refund within 7 days of purchase if the product is unused and in its original packaging.""",
             """Premium plan users have 24/7 access to customer support via phone and chat.""",
@@ -79,7 +79,7 @@ def ingest_file(path: str = None, tenant_id="demo"):
     for t in texts:
         all_chunks.extend(chunk_text(t))
 
-    print(f"📚 Created {len(all_chunks)} chunks. Generating embeddings...")
+    print(f" Created {len(all_chunks)} chunks. Generating embeddings...")
     vectors = embedder.encode(all_chunks, convert_to_numpy=True)
 
     pts = []
@@ -93,7 +93,7 @@ def ingest_file(path: str = None, tenant_id="demo"):
         )
 
     qdrant.upsert(collection_name=COLL, points=pts, wait=True)
-    print(f"✅ Inserted {len(pts)} chunks for tenant '{tenant_id}' into {COLL}")
+    print(f" Inserted {len(pts)} chunks for tenant '{tenant_id}' into {COLL}")
 
 # --- MAIN ---
 if __name__ == "__main__":

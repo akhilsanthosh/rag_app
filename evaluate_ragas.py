@@ -46,5 +46,5 @@ result = evaluate(
     metrics=[faithfulness, answer_relevancy, context_precision, context_recall]
 )
 
-print("\n📊 RAGAS Evaluation Results:")
+print("\n RAGAS Evaluation Results:")
 print(result)

@@ -10,14 +10,14 @@ COLL = os.getenv("COLLECTION", "tenant_docs_v1")
 
 # --- RETRIEVE FUNCTION WITH LATENCY TRACKING ---
 def retrieve(query: str, tenant: str, top_k: int = 8):
-    print("\n🔎 Retrieving context for query:", query)
+    print("\n Retrieving context for query:", query)
     total_start = time.time()  # ⏱ Start total timer
 
     # --- Step 1: Embedding the query ---
     t0 = time.time()
     qv = embedder.encode([query], convert_to_numpy=True)[0].tolist()
     t1 = time.time()
-    print(f"🧠 Embedding Time: {t1 - t0:.3f} seconds")
+    print(f" Embedding Time: {t1 - t0:.3f} seconds")
 
     # --- Step 2: Setting up tenant filter ---
     filt = Filter(
@@ -28,7 +28,7 @@ def retrieve(query: str, tenant: str, top_k: int = 8):
     t2 = time.time()
     hits = qdrant.search(
         collection_name=COLL,
-        query_vector=qv,        # ✅ unnamed vector — simple usage
+        query_vector=qv,        #  unnamed vector — simple usage
         query_filter=filt,
         limit=top_k,
         with_payload=True
@@ -40,7 +40,7 @@ def retrieve(query: str, tenant: str, top_k: int = 8):
     ctx = "\n\n".join(h.payload["text"] for h in hits)
 
     total_end = time.time()
-    print(f"⚡ Total Retrieval Time: {total_end - total_start:.3f} seconds\n")
+    print(f" Total Retrieval Time: {total_end - total_start:.3f} seconds\n")
 
     return ctx
 

@@ -17,9 +17,9 @@ def ask(q: str = Query(...), tenant: str = Query("demo")):
         response = StreamingResponse(stream_llama(prompt), media_type="text/plain")
 
         end = time.time()  # ⏱ End timer
-        print(f"⚡ Total Latency: {end - start:.2f} seconds")
+        print(f" Total Latency: {end - start:.2f} seconds")
 
         return response
     except Exception as e:
-        print("❌ ERROR:", e)
+        print(" ERROR:", e)
         return PlainTextResponse(content=f"Server error: {e}", status_code=500)
