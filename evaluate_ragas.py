@@ -1,6 +1,7 @@
 from ragas import evaluate
 from ragas.metrics import faithfulness, context_precision, context_recall, answer_relevancy
 from datasets import Dataset
+
 # ---- Step 1: Build your dataset ----
 # Each question here should correspond to a context, generated answer, and expected (ground truth) answer.
 
@@ -42,7 +43,7 @@ dataset = Dataset.from_dict(data)
 # ---- Step 2: Run RAGAS evaluation ----
 result = evaluate(
     dataset=dataset,
-    metrics=[faithfulness, answer_relevance, context_precision, context_recall]
+    metrics=[faithfulness, answer_relevancy, context_precision, context_recall]
 )
 
 print("\n📊 RAGAS Evaluation Results:")
